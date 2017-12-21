@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 
 import java.util.LinkedList;
 import java.util.List;
+
 import static chess.Chessboard.NUMBER_OF_SQUARES;
 
 public class Game {
@@ -51,7 +52,8 @@ public class Game {
             if (move == false) {
                 move = true;
                 for (Point2D a : availableSquare) {
-                    if(!a.equals(source.getPosition())) chessboard.getSquares()[(int) a.getX()][(int) a.getY()].setDisable(true);
+                    if (!a.equals(source.getPosition()))
+                        chessboard.getSquares()[(int) a.getX()][(int) a.getY()].setDisable(true);
                 }
                 source.setStyle("-fx-background-color:grey");
                 availableSquare.clear();
@@ -72,11 +74,13 @@ public class Game {
                     player1.updateListOfPositionOfPieces();
                     player2.updateListOfPositionOfPieces();
                     if (source.getPiece().color.equals(Color.WHITE)) turn(player2);
-                    else if (source.getPiece().color.equals(Color.BLACK))turn(player1);
+                    else if (source.getPiece().color.equals(Color.BLACK)) turn(player1);
                 }
                 move = false;
                 setDefaultColorOfChessboard();
                 squareOfPieceToMove = null;
+                //sprawdzanie czy jest szach
+                checkCheck(player1);
 
             }
         }
@@ -94,13 +98,21 @@ public class Game {
         }
     }
 
-    public void move(Square from, Square to){
-        if(to.getPiece()!=null){
-            if(to.getPiece().color.equals(Color.WHITE))player1.deletePiece(to.getPiece());
-            else if(to.getPiece().color.equals(Color.BLACK))player2.deletePiece(to.getPiece());
+    public void move(Square from, Square to) {
+        if (to.getPiece() != null) {
+            if (to.getPiece().color.equals(Color.WHITE)) player1.deletePiece(to.getPiece());
+            else if (to.getPiece().color.equals(Color.BLACK)) player2.deletePiece(to.getPiece());
         }
         from.getPiece().setPositionPiece(to.getPosition());
         to.setPiece(from.getPiece());
         from.deletePiece();
+    }
+
+    public void checkCheck(Player player) {
+        Point2D king = player2.king.getPositionPiece();
+        for (Piece piece : player.listOfPieces) {
+            if ((piece.checkSquaresForMove(chessboard)).contains(king)) System.out.println("szach");
+            break;
+        }
     }
 }
