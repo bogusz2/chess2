@@ -21,7 +21,7 @@ public class Chessboard {
     protected static int Y0 = 10;
 
 
-    public Chessboard(){
+    public Chessboard() {
         create64Squares();
         addSquaresToBoard();
     }
@@ -34,21 +34,20 @@ public class Chessboard {
         return chessboard;
     }
 
-    void create64Squares(){
+    void create64Squares() {
         for (int x = 1; x <= NUMBER_OF_SQUARES; x++) {
             for (int y = 1; y <= NUMBER_OF_SQUARES; y++) {
                 if ((x + y) % 2 == 0) {
-                    this.squares[x][y] = new Square("SIENNA",x,y);
-                }
-                else{
-                    this.squares[x][y] = new Square("WHITE",x,y);
+                    this.squares[x][y] = new Square("SIENNA", x, y);
+                } else {
+                    this.squares[x][y] = new Square("WHITE", x, y);
                 }
                 this.squares[x][y].setDisable(false);
             }
         }
     }
 
-    void addSquaresToBoard(){
+    void addSquaresToBoard() {
         for (int x = 1; x <= NUMBER_OF_SQUARES; x++) {
             for (int y = 1; y <= NUMBER_OF_SQUARES; y++) {
                 this.chessboard.getChildren().add(this.squares[x][y]);
@@ -56,10 +55,10 @@ public class Chessboard {
         }
     }
 
-    void setSquaresOffWithout(List<Point2D> list){
+    void setSquaresOffWithout(List<Point2D> list) {
         for (int x = 1; x <= NUMBER_OF_SQUARES; x++) {
             for (int y = 1; y <= NUMBER_OF_SQUARES; y++) {
-                if(list.contains(this.squares[x][y].getPosition()))this.squares[x][y].setDisable(false);
+                if (list.contains(this.squares[x][y].getPosition())) this.squares[x][y].setDisable(false);
                 else this.squares[x][y].setDisable(true);
             }
         }
