@@ -14,9 +14,9 @@ public class Rook extends Piece {
 
     private void setColor(Color c) {
         if (color == Color.WHITE) {
-            this.image = new Image("file:///C:/Users/Gal Anonim/IdeaProjects/Figury/WhiteRook.png");
+            this.image = new Image("file:///C:/Users/Gal Anonim/IdeaProjects/Chess/src/chess/Figury/WhiteRook.png");
         } else {
-            this.image = new Image("file:///C:/Users/Gal Anonim/IdeaProjects/Figury/BlackRook.png");
+            this.image = new Image("file:///C:/Users/Gal Anonim/IdeaProjects/Chess/src/chess/Figury/BlackRook.png");
         }
     }
 

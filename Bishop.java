@@ -14,9 +14,9 @@ public class Bishop extends Piece {
 
     private void setColor(Color c) {
         if (color == Color.WHITE) {
-            this.image = new Image("file:///C:/Users/Gal Anonim/IdeaProjects/Figury/WhiteBishop.png");
+            this.image = new Image("file:///C:/Users/Gal Anonim/IdeaProjects/Chess/src/chess/Figury/WhiteBishop.png");
         } else {
-            this.image = new Image("file:///C:/Users/Gal Anonim/IdeaProjects/Figury/BlackBishop.png");
+            this.image = new Image("file:///C:/Users/Gal Anonim/IdeaProjects/Chess/src/chess/Figury/BlackBishop.png");
         }
     }
 

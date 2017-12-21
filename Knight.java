@@ -14,9 +14,9 @@ public class Knight extends Piece {
 
     private void setColor(Color c) {
         if (color == Color.WHITE) {
-            this.image = new Image("file:///C:/Users/Gal Anonim/IdeaProjects/Figury/WhiteKnight.png");
+            this.image = new Image("file:///C:/Users/Gal Anonim/IdeaProjects/Chess/src/chess/Figury/WhiteKnight.png");
         } else {
-            this.image = new Image("file:///C:/Users/Gal Anonim/IdeaProjects/Figury/BlackKnight.png");
+            this.image = new Image("file:///C:/Users/Gal Anonim/IdeaProjects/Chess/src/chess/Figury/BlackKnight.png");
         }
     }
 

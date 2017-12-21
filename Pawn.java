@@ -16,10 +16,10 @@ public class Pawn extends Piece {
 
     private void setColor(Color c) {
         if (color == Color.WHITE) {
-            this.image = new Image("file:///C:/Users/Gal Anonim/IdeaProjects/Figury/WhitePawn.png");
+            this.image = new Image("file:///C:/Users/Gal Anonim/IdeaProjects/Chess/src/chess/Figury/WhitePawn.png");
 
         } else {
-            this.image = new Image("file:///C:/Users/Gal Anonim/IdeaProjects/Figury/BlackPawn.png");
+            this.image = new Image("file:///C:/Users/Gal Anonim/IdeaProjects/Chess/src/chess/Figury/BlackPawn.png");
 
         }
     }
