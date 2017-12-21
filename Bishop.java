@@ -11,13 +11,15 @@ public class Bishop extends Piece {
         super("Bishop", color, x, y);
         setColor(color);
     }
-    private void setColor(Color c){
+
+    private void setColor(Color c) {
         if (color == Color.WHITE) {
-            this.image = new Image( "file:///C:/Users/Gal Anonim/IdeaProjects/Figury/WhiteBishop.png");
+            this.image = new Image("file:///C:/Users/Gal Anonim/IdeaProjects/Figury/WhiteBishop.png");
         } else {
-            this.image = new Image( "file:///C:/Users/Gal Anonim/IdeaProjects/Figury/BlackBishop.png");
+            this.image = new Image("file:///C:/Users/Gal Anonim/IdeaProjects/Figury/BlackBishop.png");
         }
     }
+
     @Override
     List<Point2D> checkSquaresForMove(Chessboard ch) {
         this.checkNorthEast(ch);

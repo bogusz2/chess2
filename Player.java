@@ -24,7 +24,7 @@ public class Player {
     List<Point2D> positionOfPieces = new LinkedList();
 
     public Player(Color c) {
-        if(c.equals(Color.WHITE)) {
+        if (c.equals(Color.WHITE)) {
             this.king = new King(Color.WHITE, 5, 1);
             this.queen = new Queen(Color.WHITE, 4, 1);
             this.bishop1 = new Bishop(Color.WHITE, 3, 1);
@@ -33,20 +33,19 @@ public class Player {
             this.rook2 = new Rook(Color.WHITE, 8, 1);
             this.knight1 = new Knight(Color.WHITE, 2, 1);
             this.knight2 = new Knight(Color.WHITE, 7, 1);
-            for(int i = 1; i<9; i++){
+            for (int i = 1; i < 9; i++) {
                 pawns[i] = new Pawn(Color.WHITE, i, 2);
             }
-        }
-        else if(c.equals(Color.BLACK)){
+        } else if (c.equals(Color.BLACK)) {
             this.king = new King(Color.BLACK, 5, 8);
-            this.queen = new Queen( Color.BLACK, 4,8);
+            this.queen = new Queen(Color.BLACK, 4, 8);
             this.bishop1 = new Bishop(Color.BLACK, 3, 8);
             this.bishop2 = new Bishop(Color.BLACK, 6, 8);
             this.rook1 = new Rook(Color.BLACK, 1, 8);
             this.rook2 = new Rook(Color.BLACK, 8, 8);
             this.knight1 = new Knight(Color.BLACK, 2, 8);
             this.knight2 = new Knight(Color.BLACK, 7, 8);
-            for(int i = 1; i<9; i++){
+            for (int i = 1; i < 9; i++) {
                 pawns[i] = new Pawn(Color.BLACK, i, 7);
             }
 
@@ -60,7 +59,7 @@ public class Player {
         this.listOfPieces.add(rook2);
         this.listOfPieces.add(knight1);
         this.listOfPieces.add(knight2);
-        for(int i = 1; i<9; i++){
+        for (int i = 1; i < 9; i++) {
             this.listOfPieces.add(pawns[i]);
         }
         this.positionOfPieces.add(king.getPositionPiece());
@@ -71,63 +70,63 @@ public class Player {
         this.positionOfPieces.add(rook2.getPositionPiece());
         this.positionOfPieces.add(knight1.getPositionPiece());
         this.positionOfPieces.add(knight2.getPositionPiece());
-        for(int i = 1; i<9; i++){
+        for (int i = 1; i < 9; i++) {
             this.positionOfPieces.add(pawns[i].getPositionPiece());
         }
 
 
     }
 
-    public Chessboard addPiecesToChessboard(Chessboard ch){
-        for(Piece p: listOfPieces) {
-            int x = (int)p.getPositionPiece().getX();
-            int y = (int)p.getPositionPiece().getY();
+    public Chessboard addPiecesToChessboard(Chessboard ch) {
+        for (Piece p : listOfPieces) {
+            int x = (int) p.getPositionPiece().getX();
+            int y = (int) p.getPositionPiece().getY();
             ch.getSquares()[x][y].setPiece(p);
         }
         return ch;
     }
 
-    public void updateListOfPositionOfPieces(){
+    public void updateListOfPositionOfPieces() {
         positionOfPieces.clear();
-        for(Piece piece:listOfPieces) {
+        for (Piece piece : listOfPieces) {
             try {
                 this.positionOfPieces.add(piece.getPositionPiece());
                 piece.squaresToMove.clear();
-                }
-            catch (NullPointerException e) {
+            } catch (NullPointerException e) {
                 System.err.println("Piece is not exist Player.updateListOfPositionOfPieces");
             }
         }
     }
 
-    public void deletePiece(Piece piece){
+    public void deletePiece(Piece piece) {
 
-        switch(piece.getName().substring(5)){
+        switch (piece.getName().substring(5)) {
             case "King":
-                this.king=null;
+                this.king = null;
                 break;
             case "Queen":
-                this.queen=null;
+                this.queen = null;
                 break;
             case "Bishop":
-                if(piece.equals(bishop1)) this.bishop1=null;
-                else if(piece.equals(bishop2)) this.bishop2=null;
+                if (piece.equals(bishop1)) this.bishop1 = null;
+                else if (piece.equals(bishop2)) this.bishop2 = null;
                 break;
             case "Rook":
-                if(piece.equals(rook1)) this.rook1=null;
-                else if(piece.equals(rook2)) this.rook2=null;
+                if (piece.equals(rook1)) this.rook1 = null;
+                else if (piece.equals(rook2)) this.rook2 = null;
                 break;
             case "Knight":
-                if(piece.equals(rook1)) this.knight1=null;
-                else if(piece.equals(rook2)) this.knight2=null;
+                if (piece.equals(rook1)) this.knight1 = null;
+                else if (piece.equals(rook2)) this.knight2 = null;
                 break;
             case "Pawn":
-                for(int i = 1; i<9; i++) {
-                    if(piece.equals(pawns[i])) this.pawns[i] = null;
+                for (int i = 1; i < 9; i++) {
+                    if (piece.equals(pawns[i])) this.pawns[i] = null;
                 }
                 break;
 
-            default:System.out.println("Default delete,Error");
+            default:
+                System.out.println("Default delete,Error");
 
         }
         listOfPieces.remove(piece);
