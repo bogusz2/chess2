@@ -9,6 +9,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class Main extends Application {
 
@@ -21,16 +22,13 @@ public class Main extends Application {
 
         Pane nowy = game.chessboard.getChessboard();
 
-        Scene scene = new Scene(nowy, 1000, 1000);
-
-
+        Scene scene = new Scene(nowy, 620, 620);
+        primaryStage.setResizable(false);
+        primaryStage.initStyle(StageStyle.UTILITY);
         primaryStage.setScene(scene);
 
 
         primaryStage.show();
-//        Color a = Color.WHITE;
-//        String v = a.+"adsda";
-//        System.out.println(v);
     }
 
 
