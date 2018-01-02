@@ -17,8 +17,8 @@ public class Chessboard {
     private Square[][] squares = new Square[NUMBER_OF_SQUARES + 1][NUMBER_OF_SQUARES + 1];
 
     Pane chessboard = new Pane();
-    protected static int X0 = 10;
-    protected static int Y0 = 10;
+    protected static int X0 = 50;
+    protected static int Y0 = 50;
 
 
     public Chessboard() {
