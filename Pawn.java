@@ -7,14 +7,14 @@ import javafx.scene.paint.Color;
 import java.util.List;
 
 public class Pawn extends Piece {
-    boolean firstMove = true;
+    private boolean firstMove = true;
 
     public Pawn(Color color, int x, int y) {
         super("Pawn", color, x, y);
-        setColor(color);
+        setColor();
     }
 
-    private void setColor(Color c) {
+    private void setColor() {
         if (color == Color.WHITE) {
             this.image = new Image("file:///C:/Users/Gal Anonim/IdeaProjects/Chess/src/chess/Figury/WhitePawn.png");
 
@@ -24,75 +24,49 @@ public class Pawn extends Piece {
         }
     }
 
+    private void checkMoveForward(Chessboard ch, int x, int y) {
+        if (x < 9 && x > 0 && y < 9 && y > 0) {
+            if (ch.getSquares()[x][y].getPiece() == null) {
+                this.squaresToMove.add(new Point2D(x, y));
+            }
+        }
+    }
+
+    private void checkCaptures(Chessboard ch, int x, int y) {
+        if (x < 9 && x > 0 && y < 9 && y > 0) {
+            if (ch.getSquares()[x][y].getPiece() != null) {
+                if (!ch.getSquares()[x][y].getPiece().color.equals(this.color)) {
+                    this.squaresToMove.add(new Point2D(x, y));
+                }
+            }
+        }
+    }
+
+
     @Override
     List<Point2D> checkSquaresForMove(Chessboard ch) {
         int x = (int) this.getPositionPiece().getX();
         int y = (int) this.getPositionPiece().getY();
         if (this.color.equals(Color.WHITE)) {
-            if (this.firstMove) {
-                if (ch.getSquares()[x][y + 2].getPiece() == null) {
-                    squaresToMove.add(new Point2D(x, y + 2));
-                    this.firstMove = false;
-                }
-            }
-            try {
+            checkMoveForward(ch, x, y + 1);
 
-                if (ch.getSquares()[x][y + 1].getPiece() == null)
-                    squaresToMove.add(new Point2D(x, y + 1));
-            } catch (ArrayIndexOutOfBoundsException e) {
-                //System.out.println("Pawn moves 8 squares change for any removed pieces");
+            if ((!this.squaresToMove.isEmpty()) && firstMove) {
+                checkMoveForward(ch, x, y + 2);
+                firstMove = false;
             }
+            checkCaptures(ch, x + 1, y + 1);
+            checkCaptures(ch, x - 1, y + 1);
+        }
 
-            try {
-                if (!ch.getSquares()[x + 1][y + 1].getPiece().color.equals(this.color))
-                    squaresToMove.add(new Point2D(x + 1, y + 1));
-            } catch (NullPointerException e) {
-                //System.out.println("Pawn dont see piece to remove1");
-            } catch (ArrayIndexOutOfBoundsException e) {
-                //System.out.println("Pawn dont see piece to remove1");
-            }
+        if (this.color.equals(Color.BLACK)) {
+            checkMoveForward(ch, x, y - 1);
 
-            try {
-                if (!ch.getSquares()[x - 1][y + 1].getPiece().color.equals(this.color))
-                    squaresToMove.add(new Point2D(x - 1, y + 1));
-            } catch (NullPointerException e) {
-                //System.out.println("Pawn dont see piece to remove2");
-            } catch (ArrayIndexOutOfBoundsException e) {
-                //System.out.println("Pawn dont see piece to remove2");
+            if ((!this.squaresToMove.isEmpty()) && firstMove) {
+                checkMoveForward(ch, x, y - 2);
+                firstMove = false;
             }
-        } else if (this.color.equals(Color.BLACK)) {
-
-            if (this.firstMove) {
-                if (ch.getSquares()[x][y - 2].getPiece() == null) {
-                    squaresToMove.add(new Point2D(x, y - 2));
-                    this.firstMove = false;
-                }
-            }
-
-            try {
-                if (ch.getSquares()[x][y - 1].getPiece() == null)
-                    squaresToMove.add(new Point2D(x, y - 1));
-            } catch (ArrayIndexOutOfBoundsException e) {
-                //System.out.println("Pawn moves 8 squares change for any removed pieces");
-            }
-
-            try {
-                if (!ch.getSquares()[x + 1][y - 1].getPiece().color.equals(this.color))
-                    squaresToMove.add(new Point2D(x + 1, y - 1));
-            } catch (NullPointerException e) {
-                // System.out.println("Pawn dont see piece to remove3");
-            } catch (ArrayIndexOutOfBoundsException e) {
-                // System.out.println("Pawn dont see piece to remove3");
-            }
-
-            try {
-                if (!ch.getSquares()[x - 1][y - 1].getPiece().color.equals(this.color))
-                    squaresToMove.add(new Point2D(x - 1, y - 1));
-            } catch (NullPointerException e) {
-                //System.out.println("Pawn dont see piece to remove4");
-            } catch (ArrayIndexOutOfBoundsException e) {
-                //System.out.println("Pawn dont see piece to remove4");
-            }
+            checkCaptures(ch, x + 1, y - 1);
+            checkCaptures(ch, x - 1, y - 1);
         }
         return squaresToMove;
     }
