@@ -26,6 +26,10 @@ public class Chessboard {
         addSquaresToBoard();
     }
 
+    public void setSquares(Square[][] squares) {
+        this.squares = squares;
+    }
+
     public Square[][] getSquares() {
         return squares;
     }
