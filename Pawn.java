@@ -7,7 +7,7 @@ import javafx.scene.paint.Color;
 import java.util.List;
 
 public class Pawn extends Piece {
-    private boolean firstMove = true;
+    protected boolean firstMove = true;
 
     public Pawn(Color color, int x, int y) {
         super("Pawn", color, x, y);
@@ -45,14 +45,15 @@ public class Pawn extends Piece {
 
     @Override
     List<Point2D> checkSquaresForMove(Chessboard ch) {
+        this.squaresToMove.clear();//???????????????????????????????????????????????????????????
         int x = (int) this.getPositionPiece().getX();
         int y = (int) this.getPositionPiece().getY();
         if (this.color.equals(Color.WHITE)) {
             checkMoveForward(ch, x, y + 1);
 
-            if ((!this.squaresToMove.isEmpty()) && firstMove) {
+            if ((!this.squaresToMove.isEmpty()) & firstMove) {
                 checkMoveForward(ch, x, y + 2);
-                firstMove = false;
+               // firstMove = false;
             }
             checkCaptures(ch, x + 1, y + 1);
             checkCaptures(ch, x - 1, y + 1);
@@ -63,7 +64,7 @@ public class Pawn extends Piece {
 
             if ((!this.squaresToMove.isEmpty()) && firstMove) {
                 checkMoveForward(ch, x, y - 2);
-                firstMove = false;
+                //firstMove = false;
             }
             checkCaptures(ch, x + 1, y - 1);
             checkCaptures(ch, x - 1, y - 1);
