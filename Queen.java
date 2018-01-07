@@ -24,6 +24,7 @@ public class Queen extends Piece {
 
     @Override
     List<Point2D> checkSquaresForMove(Chessboard ch) {
+        this.squaresToMove.clear();
         this.checkNorth(ch);
         this.checkSouth(ch);
         this.checkEast(ch);

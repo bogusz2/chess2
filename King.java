@@ -24,6 +24,7 @@ public class King extends Piece {
 
     @Override
     List<Point2D> checkSquaresForMove(Chessboard ch) {
+        this.squaresToMove.clear();
         int x = (int) this.getPositionPiece().getX();
         int y = (int) this.getPositionPiece().getY();
 

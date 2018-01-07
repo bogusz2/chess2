@@ -2,11 +2,9 @@ package chess;
 
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
-
 import java.util.LinkedList;
 import java.util.List;
 
-import static chess.Chessboard.NUMBER_OF_SQUARES;
 
 public class Player {
     King king;
@@ -18,8 +16,6 @@ public class Player {
     Knight knight1;
     Knight knight2;
     Pawn[] pawns = new Pawn[9];
-
-
     List<Piece> listOfPieces = new LinkedList();
     List<Point2D> positionOfPieces = new LinkedList();
 

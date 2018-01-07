@@ -22,6 +22,7 @@ public class Bishop extends Piece {
 
     @Override
     List<Point2D> checkSquaresForMove(Chessboard ch) {
+        this.squaresToMove.clear();
         this.checkNorthEast(ch);
         this.checkNorthWest(ch);
         this.checkSouthEast(ch);
