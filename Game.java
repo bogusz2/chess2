@@ -13,11 +13,13 @@ import static chess.Chessboard.NUMBER_OF_SQUARES;
 public class Game {
     List<Point2D> availableSquare = new LinkedList<Point2D>();
     boolean move = false;
-    public  static boolean check = false;
+    public static boolean check = false;
     Square squareOfPieceToMove;
     Chessboard chessboard = new Chessboard();
     Player player1 = new Player(Color.WHITE);
     Player player2 = new Player(Color.BLACK);
+    Player currentPlayer;
+    Player waitingPlayer;
 
     public Game() {
         player1.addPiecesToChessboard(chessboard);
@@ -31,8 +33,10 @@ public class Game {
     }
 
     private void turn(Player player) {
+        if (player == player1) waitingPlayer = player2;
+        else waitingPlayer = player1;
+        currentPlayer = player;
         availableSquare.clear();
-       // System.out.println();
         availableSquare.addAll(player.positionOfPieces);
 
         for (int x = 1; x <= NUMBER_OF_SQUARES; x++) {
@@ -49,78 +53,51 @@ public class Game {
         @Override
         public void handle(ActionEvent event) {
             Square source = (Square) event.getSource();
-
-
-
-
-
-
-           /* Piece clipboard=null;
-            checkCheck(player1);
-            if (check) {
-                if (move == false) {
-                    move = true;
-                    for (Point2D a : availableSquare) {
-                        if (!a.equals(source.getPosition()))
-                            chessboard.getSquares()[(int) a.getX()][(int) a.getY()].setDisable(true);
-                    }
-                    source.setStyle("-fx-background-color:grey");
-                    availableSquare.clear();
-                    availableSquare.addAll(source.getPiece().checkSquaresForMove(chessboard));
-                    for (Point2D a : availableSquare) {
-
-                        if(chessboard.getSquares()[(int) a.getX()][(int) a.getY()].getPiece()!=null)
-                            clipboard = chessboard.getSquares()[(int) a.getX()][(int) a.getY()].getPiece();
-
-                        chessboard.getSquares()[(int) a.getX()][(int) a.getY()].setPiece(source.getPiece());
-                        source.deletePiece();
-
-                        if (checkCheck(player1) == null) {
-                            chessboard.getSquares()[(int) a.getX()][(int) a.getY()].setDisable(false);
-                            chessboard.getSquares()[(int) a.getX()][(int) a.getY()].setStyle("-fx-background-color:grey;-fx-border-color: black;-fx-border-width: 2;");
-                        }
-
-                        source.setPiece(chessboard.getSquares()[(int) a.getX()][(int) a.getY()].getPiece());
-                        chessboard.getSquares()[(int) a.getX()][(int) a.getY()].deletePiece();
-
-                        if(clipboard!=null){
-                            chessboard.getSquares()[(int) a.getX()][(int) a.getY()].setPiece(clipboard);
-                            clipboard=null;
-                        }
-                    }
-                    squareOfPieceToMove = source;
-                } else   putPieceOnChessboard(source);
-
-
-
-
-
-
-
-            } else{*/
-                if (move == false) {
-                    markAvailableSquares(source);
-
-                } else {
-                    putPieceOnChessboard(source);
-                }
-           // }
+            if (move == false) markAvailableSquares(source);
+            else putPieceOnChessboard(source);
         }
     }
 
     public void markAvailableSquares(Square source) {
+        Piece clipboard = null;
+        boolean pieceOfPlayerDisable = false;
         move = true;
+
         for (Point2D a : availableSquare) {
             if (!a.equals(source.getPosition()))
                 chessboard.getSquares()[(int) a.getX()][(int) a.getY()].setDisable(true);
         }
+
         source.setStyle("-fx-background-color:grey");
         availableSquare.clear();
         availableSquare.addAll(source.getPiece().checkSquaresForMove(chessboard));
 
         for (Point2D a : availableSquare) {
-            chessboard.getSquares()[(int) a.getX()][(int) a.getY()].setDisable(false);
-            chessboard.getSquares()[(int) a.getX()][(int) a.getY()].setStyle("-fx-background-color:grey;-fx-border-color: black;-fx-border-width: 2;");
+            Square currentAvailableSquare = chessboard.getSquares()[(int) a.getX()][(int) a.getY()];
+
+            if (currentAvailableSquare.getPiece() != null) {
+                pieceOfPlayerDisable = true;
+                clipboard = currentAvailableSquare.getPiece();
+                source.getPiece().setPositionPiece(currentAvailableSquare.getPosition());
+                currentAvailableSquare.setPiece(source.getPiece());
+                source.deletePiece();
+                waitingPlayer.enablePiece(clipboard, false);
+
+            } else move(source, currentAvailableSquare);
+
+            if (!checkCheck()) {
+                currentAvailableSquare.setDisable(false);
+                currentAvailableSquare.setStyle("-fx-background-color:grey;-fx-border-color: black;-fx-border-width: 2;");
+            }
+
+            move(currentAvailableSquare, source);
+
+            if (pieceOfPlayerDisable) {
+                currentAvailableSquare.setPiece(clipboard);
+                waitingPlayer.enablePiece(clipboard, true);
+                clipboard = null;
+                pieceOfPlayerDisable = false;
+            }
         }
         squareOfPieceToMove = source;
     }
@@ -132,20 +109,20 @@ public class Game {
             else if (source.getPiece().color.equals(Color.BLACK)) turn(player2);
         } else {
             move(squareOfPieceToMove, source);
+            check = false;
             player1.updateListOfPositionOfPieces();
             player2.updateListOfPositionOfPieces();
             if (source.getPiece().color.equals(Color.WHITE)) turn(player2);
             else if (source.getPiece().color.equals(Color.BLACK)) turn(player1);
         }
         move = false;
+        checkCheck();
         setDefaultColorOfChessboard();
         squareOfPieceToMove = null;
-
-
     }
 
     public void move(Square from, Square to) {
-        if(from.getPiece().getName().contains("Pawn")) ((Pawn)from.getPiece()).firstMove = false;
+        if (from.getPiece().getName().contains("Pawn")) ((Pawn) from.getPiece()).firstMove = false;
 
         if (to.getPiece() != null) {
             if (to.getPiece().color.equals(Color.WHITE)) player1.deletePiece(to.getPiece());
@@ -168,24 +145,28 @@ public class Game {
         }
     }
 
-    public Piece checkCheck(Player player) {
-        Point2D king = player2.king.getPositionPiece();
-        for (Piece piece : player.listOfPieces) {
+    public boolean checkCheck() {
+        Player playerAttack;
+        Point2D king = currentPlayer.king.getPositionPiece();
+        if (currentPlayer.equals(player1)) {
+            playerAttack = player2;
+        } else if (currentPlayer.equals(player2)) {
+            playerAttack = player1;
+        } else {
+            playerAttack = null;
+            System.out.println("Error in checkCheck");
+        }
+
+        for (Piece piece : playerAttack.listOfPieces) {
+
             if ((piece.checkSquaresForMove(chessboard)).contains(king)) {
                 check = true;
-                System.out.println("CHECK TRUE");
-                return piece;
+                System.out.println("King is in CHECK");
+                return true;
             }
         }
-        System.out.println("CHECK FALSE");
         check = false;
-        return null;
-    }
-
-    public void moveAfterCheck(){
-        Chessboard clone = new Chessboard();
-        clone.setSquares(chessboard.getSquares().clone());
-
+        return false;
     }
 
 }
