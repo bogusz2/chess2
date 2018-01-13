@@ -2,6 +2,7 @@ package chess;
 
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class Player {
     Pawn[] pawns = new Pawn[9];
     List<Piece> listOfPieces = new LinkedList();
     List<Point2D> positionOfPieces = new LinkedList();
+
 
     public Player(Color c) {
         if (c.equals(Color.WHITE)) {
@@ -126,5 +128,10 @@ public class Player {
 
         }
         listOfPieces.remove(piece);
+    }
+
+    public void enablePiece(Piece piece, boolean enable) {
+        if (!enable) listOfPieces.remove(piece);
+        else listOfPieces.add(piece);
     }
 }
