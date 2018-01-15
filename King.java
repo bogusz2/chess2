@@ -7,6 +7,7 @@ import javafx.scene.paint.Color;
 import java.util.List;
 
 public class King extends Piece {
+    public boolean isMoved = false;
     public King(Color color, int x, int y) {
         super("King", color, x, y);
         setColor(color);

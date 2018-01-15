@@ -53,7 +53,7 @@ public class Game {
         @Override
         public void handle(ActionEvent event) {
             Square source = (Square) event.getSource();
-            if (move == false) markAvailableSquares(source);
+            if (!move) markAvailableSquares(source);
             else putPieceOnChessboard(source);
         }
     }
@@ -72,6 +72,10 @@ public class Game {
         availableSquare.clear();
         availableSquare.addAll(source.getPiece().checkSquaresForMove(chessboard));
 
+        if (source.getPiece().getName().substring(5, 9).equals("King")) {
+            checkCastling(availableSquare);
+        }
+
         for (Point2D a : availableSquare) {
             Square currentAvailableSquare = chessboard.getSquares()[(int) a.getX()][(int) a.getY()];
 
@@ -86,8 +90,8 @@ public class Game {
             } else move(source, currentAvailableSquare);
 
             if (!checkCheck()) {
-                currentAvailableSquare.setDisable(false);
-                currentAvailableSquare.setStyle("-fx-background-color:grey;-fx-border-color: black;-fx-border-width: 2;");
+                    currentAvailableSquare.setDisable(false);
+                    currentAvailableSquare.setStyle("-fx-background-color:grey;-fx-border-color: black;-fx-border-width: 2;");
             }
 
             move(currentAvailableSquare, source);
@@ -98,7 +102,16 @@ public class Game {
                 clipboard = null;
                 pieceOfPlayerDisable = false;
             }
+            if(source.getPiece().getName().contains("King")) {
+                if ((source.getPosition().getX() - a.getX() == 2) && chessboard.getSquares()[(int) a.getX() + 1][(int) a.getY()].isDisable()) {
+                    chessboard.getSquares()[(int)a.getX()][(int)a.getY()].setDisable(true);
+                }
+                if ((a.getX() - source.getPosition().getX() == 2) && chessboard.getSquares()[(int) a.getX() - 1][(int) a.getY()].isDisable()) {
+                    chessboard.getSquares()[(int)a.getX()][(int)a.getY()].setDisable(true);
+                }
+            }
         }
+
         squareOfPieceToMove = source;
     }
 
@@ -108,7 +121,28 @@ public class Game {
             if (source.getPiece().color.equals(Color.WHITE)) turn(player1);
             else if (source.getPiece().color.equals(Color.BLACK)) turn(player2);
         } else {
+
+            if (squareOfPieceToMove.getPiece().getName().substring(5, 9).equals("King")) {
+                if ((source.getPosition().getX() - squareOfPieceToMove.getPosition().getX()) == 2) {
+                    move(chessboard.getSquares()[(int) source.getPosition().getX() + 1][(int) source.getPosition().getY()],
+                            chessboard.getSquares()[(int) source.getPosition().getX() - 1][(int) source.getPosition().getY()]);
+                } else if (squareOfPieceToMove.getPosition().getX() - source.getPosition().getX() == 2) {
+                    move(chessboard.getSquares()[(int) source.getPosition().getX() - 2][(int) source.getPosition().getY()],
+                            chessboard.getSquares()[(int) source.getPosition().getX() + 1][(int) source.getPosition().getY()]);
+                }
+            }
+
+            if (squareOfPieceToMove.getPiece().getName().contains("Pawn")) ((Pawn) squareOfPieceToMove.getPiece()).firstMove = false;
+            if (squareOfPieceToMove.getPiece().getName().contains("King")) ((King) squareOfPieceToMove.getPiece()).isMoved = true;
+            if (squareOfPieceToMove.getPiece().getName().contains("Rook")) ((Rook) squareOfPieceToMove.getPiece()).isMoved = true;
+
             move(squareOfPieceToMove, source);
+
+            if(source.getPiece().getName().contains("Pawn") && (source.getPosition().getY()==1 ||source.getPosition().getY()==8)){
+                ///////////////////////////
+                ////////////////
+                //////////////
+            }
             check = false;
             player1.updateListOfPositionOfPieces();
             player2.updateListOfPositionOfPieces();
@@ -121,9 +155,31 @@ public class Game {
         squareOfPieceToMove = null;
     }
 
-    public void move(Square from, Square to) {
-        if (from.getPiece().getName().contains("Pawn")) ((Pawn) from.getPiece()).firstMove = false;
+    public boolean checkCastling(List<Point2D> availableSquare) {
+        int x = (int) currentPlayer.king.getPositionPiece().getX();
+        int y = (int) currentPlayer.king.getPositionPiece().getY();
+        if (check) return false;
+        if (!currentPlayer.king.isMoved) {
+            if (!currentPlayer.rook1.isMoved) {
+                if (chessboard.getSquares()[x - 1][y].getPiece() == null &&
+                        chessboard.getSquares()[x - 2][y].getPiece() == null &&
+                        chessboard.getSquares()[x - 3][y].getPiece() == null
+                        ) {
+                    availableSquare.add(chessboard.getSquares()[x - 2][y].getPosition());
+                }
+            }
+            if (!currentPlayer.rook2.isMoved) {
+                if (chessboard.getSquares()[x + 1][y].getPiece() == null &&
+                        chessboard.getSquares()[x + 2][y].getPiece() == null
+                        ) {
+                    availableSquare.add(chessboard.getSquares()[x + 2][y].getPosition());
+                }
+            }
+        }
+        return true;
+    }
 
+    public void move(Square from, Square to) {
         if (to.getPiece() != null) {
             if (to.getPiece().color.equals(Color.WHITE)) player1.deletePiece(to.getPiece());
             else if (to.getPiece().color.equals(Color.BLACK)) player2.deletePiece(to.getPiece());
@@ -161,7 +217,8 @@ public class Game {
 
             if ((piece.checkSquaresForMove(chessboard)).contains(king)) {
                 check = true;
-                System.out.println("King is in CHECK");
+                System.out.println();
+                System.out.println("King is in CHECK from " + piece.getName());
                 return true;
             }
         }

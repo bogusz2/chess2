@@ -7,6 +7,7 @@ import javafx.scene.paint.Color;
 import java.util.List;
 
 public class Rook extends Piece {
+    public boolean isMoved = false;
     public Rook(Color color, int x, int y) {
         super("Rook", color, x, y);
         setColor(color);
