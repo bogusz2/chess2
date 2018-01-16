@@ -19,6 +19,7 @@ public class Player {
     Pawn[] pawns = new Pawn[9];
     List<Piece> listOfPieces = new LinkedList();
     List<Point2D> positionOfPieces = new LinkedList();
+    public List<Piece> insteadOfPawn = new LinkedList();
 
 
     public Player(Color c) {
@@ -133,5 +134,40 @@ public class Player {
     public void enablePiece(Piece piece, boolean enable) {
         if (!enable) listOfPieces.remove(piece);
         else listOfPieces.add(piece);
+    }
+
+    public void promotionPawn(Chessboard ch, Square source, String piece){
+
+        switch(piece){
+            case "Queen":
+                Queen queenPawn = new Queen(source.getPiece().color,source.getPosition());
+                promotionPawnToPiece(ch, source, queenPawn);
+                break;
+            case "Rook":
+                Rook rookPawn = new Rook(source.getPiece().color,source.getPosition());
+                promotionPawnToPiece(ch, source, rookPawn);
+                break;
+            case "Bishop":
+                Bishop bishopPawn = new Bishop(source.getPiece().color,source.getPosition());
+                promotionPawnToPiece(ch, source, bishopPawn);
+                break;
+            case "Knight":
+                Knight knightPawn = new Knight(source.getPiece().color,source.getPosition());
+                promotionPawnToPiece(ch, source, knightPawn);
+                break;
+                default:
+                    System.out.println("Error in Player.changePawnToPiece()");
+        }
+
+    }
+    private void promotionPawnToPiece(Chessboard ch,Square source, Piece piece){
+        this.insteadOfPawn.add(piece);
+        this.listOfPieces.add(piece);
+        this.listOfPieces.remove(source.getPiece());
+        this.positionOfPieces.remove(source.getPosition());
+        this.positionOfPieces.add(piece.getPositionPiece());
+        this.deletePiece(source.getPiece());
+        source.deletePiece();
+        ch.getSquares()[(int)source.getPosition().getX()][(int)source.getPosition().getY()].setPiece(piece);
     }
 }
