@@ -12,6 +12,11 @@ public class Bishop extends Piece {
         setColor(color);
     }
 
+    public Bishop(Color color, Point2D p) {
+        super("Bishop", color,  (int)p.getX(), (int)p.getY());
+        setColor(color);
+    }
+
     private void setColor(Color c) {
         if (color == Color.WHITE) {
             this.image = new Image("file:///C:/Users/Gal Anonim/IdeaProjects/Chess/src/chess/Figury/WhiteBishop.png");

@@ -11,6 +11,10 @@ public class Queen extends Piece {
         super("Queen", color, x, y);
         setColor(color);
     }
+    public Queen(Color color, Point2D p) {
+        super("Queen", color, (int)p.getX(), (int)p.getY());
+        setColor(color);
+    }
 
     private void setColor(Color c) {
         if (color == Color.WHITE) {

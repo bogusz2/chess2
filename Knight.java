@@ -12,6 +12,11 @@ public class Knight extends Piece {
         setColor(color);
     }
 
+    public Knight(Color color, Point2D p) {
+        super("Knight", color,  (int)p.getX(), (int)p.getY());
+        setColor(color);
+    }
+
     private void setColor(Color c) {
         if (color == Color.WHITE) {
             this.image = new Image("file:///C:/Users/Gal Anonim/IdeaProjects/Chess/src/chess/Figury/WhiteKnight.png");

@@ -13,6 +13,11 @@ public class Rook extends Piece {
         setColor(color);
     }
 
+    public Rook(Color color, Point2D p) {
+        super("Rook", color,  (int)p.getX(), (int)p.getY());
+        setColor(color);
+    }
+
     private void setColor(Color c) {
         if (color == Color.WHITE) {
             this.image = new Image("file:///C:/Users/Gal Anonim/IdeaProjects/Chess/src/chess/Figury/WhiteRook.png");
