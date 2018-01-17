@@ -76,7 +76,7 @@ public class Game {
 
         availableSquare.clear();
         availableSquare.addAll(source.getPiece().checkSquaresForMove(chessboard));
-        if (source.getPiece().getName().substring(5, 9).equals("King")) {
+        if (source.getPiece() instanceof King){
             addCastlingMove(availableSquare);
         }
         for (Point2D a : availableSquare) {
@@ -136,7 +136,7 @@ public class Game {
     }
 
     private void checkCastlingIsAvailable(Square source, Point2D avPoint) {
-        if (source.getPiece().getName().contains("King")) {
+        if (source.getPiece() instanceof King){
             if ((source.getPosition().getX() - avPoint.getX() == 2) && chessboard.getSquares()[(int) avPoint.getX() + 1][(int) avPoint.getY()].isDisable()) {
                 chessboard.getSquares()[(int) avPoint.getX()][(int) avPoint.getY()].setDisable(true);
             }
@@ -156,12 +156,11 @@ public class Game {
         } else {
             doCastlingIfCan(source);
 
-            if (squareOfPieceToMove.getPiece().getName().contains("Pawn"))
+            if (squareOfPieceToMove.getPiece() instanceof Pawn)
                 ((Pawn) squareOfPieceToMove.getPiece()).firstMove = false;
 
             move(squareOfPieceToMove, source);
             checkPromotionPawn(source);
-            
             check = false;
             player1.updateListOfPositionOfPieces();
             player2.updateListOfPositionOfPieces();
@@ -175,17 +174,17 @@ public class Game {
     }
 
     private void doCastlingIfCan(Square source) {
-        if (squareOfPieceToMove.getPiece().getName().substring(5, 9).equals("King")) {
-            if ((source.getPosition().getX() - squareOfPieceToMove.getPosition().getX()) == 2) {
-                move(chessboard.getSquares()[(int) source.getPosition().getX() + 1][(int) source.getPosition().getY()],
-                        chessboard.getSquares()[(int) source.getPosition().getX() - 1][(int) source.getPosition().getY()]);
-            } else if (squareOfPieceToMove.getPosition().getX() - source.getPosition().getX() == 2) {
-                move(chessboard.getSquares()[(int) source.getPosition().getX() - 2][(int) source.getPosition().getY()],
-                        chessboard.getSquares()[(int) source.getPosition().getX() + 1][(int) source.getPosition().getY()]);
+        int srcX = (int) source.getPosition().getX();
+        int srcY = (int) source.getPosition().getY();
+        if (squareOfPieceToMove.getPiece() instanceof King){
+            if ((srcX - squareOfPieceToMove.getPosition().getX()) == 2) {
+                move(chessboard.getSquares()[srcX + 1][srcY], chessboard.getSquares()[srcX - 1][srcY]);
+            } else if (squareOfPieceToMove.getPosition().getX() - srcX == 2) {
+                move(chessboard.getSquares()[srcX - 2][srcY], chessboard.getSquares()[srcX + 1][srcY]);
             }
-            if (squareOfPieceToMove.getPiece().getName().contains("King"))
+            if (squareOfPieceToMove.getPiece() instanceof King)
                 ((King) squareOfPieceToMove.getPiece()).isMoved = true;
-            if (squareOfPieceToMove.getPiece().getName().contains("Rook"))
+            if (squareOfPieceToMove.getPiece() instanceof Rook)
                 ((Rook) squareOfPieceToMove.getPiece()).isMoved = true;
         }
     }
@@ -201,7 +200,7 @@ public class Game {
     }
 
     private boolean checkPromotionPawn(Square source) {
-        if (source.getPiece().getName().contains("Pawn") && (source.getPosition().getY() == 1 || source.getPosition().getY() == 8)) {
+        if ((source.getPiece()instanceof Pawn) && (source.getPosition().getY() == 1 || source.getPosition().getY() == 8)) {
             chessboard.setSquaresOff();
             ChoiceBox<String> choosePiece = new ChoiceBox<>();
             choosePiece.getItems().addAll("Queen", "Bishop", "Knight", "Rook");
