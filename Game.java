@@ -3,6 +3,7 @@ package chess;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.paint.Color;
 
 import java.util.LinkedList;
@@ -11,15 +12,20 @@ import java.util.List;
 import static chess.Chessboard.NUMBER_OF_SQUARES;
 
 public class Game {
-    List<Point2D> availableSquare = new LinkedList<Point2D>();
-    boolean move = false;
-    public static boolean check = false;
-    Square squareOfPieceToMove;
-    Chessboard chessboard = new Chessboard();
-    Player player1 = new Player(Color.WHITE);
-    Player player2 = new Player(Color.BLACK);
-    Player currentPlayer;
-    Player waitingPlayer;
+    private Player player1 = new Player(Color.WHITE);
+    private Player player2 = new Player(Color.BLACK);
+    private Player currentPlayer;
+    private Player waitingPlayer;
+    private Chessboard chessboard = new Chessboard();
+    private List<Point2D> availableSquare = new LinkedList<Point2D>();
+    private boolean move = false;
+    private boolean check = false;
+    private Square squareOfPieceToMove;
+
+    public Chessboard getChessboard() {
+        return chessboard;
+    }
+
 
     public Game() {
         player1.addPiecesToChessboard(chessboard);
@@ -47,35 +53,32 @@ public class Game {
         }
     }
 
-
     class PressButton implements EventHandler<ActionEvent> {
-
         @Override
         public void handle(ActionEvent event) {
             Square source = (Square) event.getSource();
             if (!move) markAvailableSquares(source);
             else putPieceOnChessboard(source);
+
         }
     }
 
-    public void markAvailableSquares(Square source) {
+    private void markAvailableSquares(Square source) {
         Piece clipboard = null;
         boolean pieceOfPlayerDisable = false;
         move = true;
+        source.setStyle("-fx-background-color:grey");
 
         for (Point2D a : availableSquare) {
             if (!a.equals(source.getPosition()))
                 chessboard.getSquares()[(int) a.getX()][(int) a.getY()].setDisable(true);
         }
 
-        source.setStyle("-fx-background-color:grey");
         availableSquare.clear();
         availableSquare.addAll(source.getPiece().checkSquaresForMove(chessboard));
-
         if (source.getPiece().getName().substring(5, 9).equals("King")) {
-            checkCastling(availableSquare);
+            addCastlingMove(availableSquare);
         }
-
         for (Point2D a : availableSquare) {
             Square currentAvailableSquare = chessboard.getSquares()[(int) a.getX()][(int) a.getY()];
 
@@ -90,8 +93,8 @@ public class Game {
             } else move(source, currentAvailableSquare);
 
             if (!checkCheck()) {
-                    currentAvailableSquare.setDisable(false);
-                    currentAvailableSquare.setStyle("-fx-background-color:grey;-fx-border-color: black;-fx-border-width: 2;");
+                currentAvailableSquare.setDisable(false);
+                currentAvailableSquare.setStyle("-fx-background-color:grey;-fx-border-color: black;-fx-border-width: 2;");
             }
 
             move(currentAvailableSquare, source);
@@ -102,64 +105,17 @@ public class Game {
                 clipboard = null;
                 pieceOfPlayerDisable = false;
             }
-            if(source.getPiece().getName().contains("King")) {
-                if ((source.getPosition().getX() - a.getX() == 2) && chessboard.getSquares()[(int) a.getX() + 1][(int) a.getY()].isDisable()) {
-                    chessboard.getSquares()[(int)a.getX()][(int)a.getY()].setDisable(true);
-                }
-                if ((a.getX() - source.getPosition().getX() == 2) && chessboard.getSquares()[(int) a.getX() - 1][(int) a.getY()].isDisable()) {
-                    chessboard.getSquares()[(int)a.getX()][(int)a.getY()].setDisable(true);
-                }
-            }
+            checkCastlingIsAvailable(source, a);
         }
-
         squareOfPieceToMove = source;
     }
 
-    public void putPieceOnChessboard(Square source) {
-        if (squareOfPieceToMove.equals(source)) {
-            move = false;
-            if (source.getPiece().color.equals(Color.WHITE)) turn(player1);
-            else if (source.getPiece().color.equals(Color.BLACK)) turn(player2);
-        } else {
-
-            if (squareOfPieceToMove.getPiece().getName().substring(5, 9).equals("King")) {
-                if ((source.getPosition().getX() - squareOfPieceToMove.getPosition().getX()) == 2) {
-                    move(chessboard.getSquares()[(int) source.getPosition().getX() + 1][(int) source.getPosition().getY()],
-                            chessboard.getSquares()[(int) source.getPosition().getX() - 1][(int) source.getPosition().getY()]);
-                } else if (squareOfPieceToMove.getPosition().getX() - source.getPosition().getX() == 2) {
-                    move(chessboard.getSquares()[(int) source.getPosition().getX() - 2][(int) source.getPosition().getY()],
-                            chessboard.getSquares()[(int) source.getPosition().getX() + 1][(int) source.getPosition().getY()]);
-                }
-            }
-
-            if (squareOfPieceToMove.getPiece().getName().contains("Pawn")) ((Pawn) squareOfPieceToMove.getPiece()).firstMove = false;
-            if (squareOfPieceToMove.getPiece().getName().contains("King")) ((King) squareOfPieceToMove.getPiece()).isMoved = true;
-            if (squareOfPieceToMove.getPiece().getName().contains("Rook")) ((Rook) squareOfPieceToMove.getPiece()).isMoved = true;
-
-            move(squareOfPieceToMove, source);
-
-            if(source.getPiece().getName().contains("Pawn") && (source.getPosition().getY()==1 ||source.getPosition().getY()==8)){
-                ///////////////////////////
-                ////////////////
-                //////////////
-            }
-            check = false;
-            player1.updateListOfPositionOfPieces();
-            player2.updateListOfPositionOfPieces();
-            if (source.getPiece().color.equals(Color.WHITE)) turn(player2);
-            else if (source.getPiece().color.equals(Color.BLACK)) turn(player1);
-        }
-        move = false;
-        checkCheck();
-        setDefaultColorOfChessboard();
-        squareOfPieceToMove = null;
-    }
-
-    public boolean checkCastling(List<Point2D> availableSquare) {
+    private boolean addCastlingMove(List<Point2D> availableSquare) {
         int x = (int) currentPlayer.king.getPositionPiece().getX();
         int y = (int) currentPlayer.king.getPositionPiece().getY();
         if (check) return false;
         if (!currentPlayer.king.isMoved) {
+
             if (!currentPlayer.rook1.isMoved) {
                 if (chessboard.getSquares()[x - 1][y].getPiece() == null &&
                         chessboard.getSquares()[x - 2][y].getPiece() == null &&
@@ -179,7 +135,62 @@ public class Game {
         return true;
     }
 
-    public void move(Square from, Square to) {
+    private void checkCastlingIsAvailable(Square source, Point2D avPoint) {
+        if (source.getPiece().getName().contains("King")) {
+            if ((source.getPosition().getX() - avPoint.getX() == 2) && chessboard.getSquares()[(int) avPoint.getX() + 1][(int) avPoint.getY()].isDisable()) {
+                chessboard.getSquares()[(int) avPoint.getX()][(int) avPoint.getY()].setDisable(true);
+            }
+            if ((avPoint.getX() - source.getPosition().getX() == 2) && chessboard.getSquares()[(int) avPoint.getX() - 1][(int) avPoint.getY()].isDisable()) {
+                chessboard.getSquares()[(int) avPoint.getX()][(int) avPoint.getY()].setDisable(true);
+            }
+        }
+    }
+
+
+    private void putPieceOnChessboard(Square source) {
+        if (squareOfPieceToMove.equals(source)) {
+            move = false;
+            if (source.getPiece().color.equals(Color.WHITE)) turn(player1);
+            else if (source.getPiece().color.equals(Color.BLACK)) turn(player2);
+
+        } else {
+            doCastlingIfCan(source);
+
+            if (squareOfPieceToMove.getPiece().getName().contains("Pawn"))
+                ((Pawn) squareOfPieceToMove.getPiece()).firstMove = false;
+
+            move(squareOfPieceToMove, source);
+            checkPromotionPawn(source);
+            
+            check = false;
+            player1.updateListOfPositionOfPieces();
+            player2.updateListOfPositionOfPieces();
+            if (source.getPiece().color.equals(Color.WHITE)) turn(player2);
+            else if (source.getPiece().color.equals(Color.BLACK)) turn(player1);
+        }
+        move = false;
+        checkCheck();
+        setDefaultColorOfChessboard();
+        squareOfPieceToMove = null;
+    }
+
+    private void doCastlingIfCan(Square source) {
+        if (squareOfPieceToMove.getPiece().getName().substring(5, 9).equals("King")) {
+            if ((source.getPosition().getX() - squareOfPieceToMove.getPosition().getX()) == 2) {
+                move(chessboard.getSquares()[(int) source.getPosition().getX() + 1][(int) source.getPosition().getY()],
+                        chessboard.getSquares()[(int) source.getPosition().getX() - 1][(int) source.getPosition().getY()]);
+            } else if (squareOfPieceToMove.getPosition().getX() - source.getPosition().getX() == 2) {
+                move(chessboard.getSquares()[(int) source.getPosition().getX() - 2][(int) source.getPosition().getY()],
+                        chessboard.getSquares()[(int) source.getPosition().getX() + 1][(int) source.getPosition().getY()]);
+            }
+            if (squareOfPieceToMove.getPiece().getName().contains("King"))
+                ((King) squareOfPieceToMove.getPiece()).isMoved = true;
+            if (squareOfPieceToMove.getPiece().getName().contains("Rook"))
+                ((Rook) squareOfPieceToMove.getPiece()).isMoved = true;
+        }
+    }
+
+    private void move(Square from, Square to) {
         if (to.getPiece() != null) {
             if (to.getPiece().color.equals(Color.WHITE)) player1.deletePiece(to.getPiece());
             else if (to.getPiece().color.equals(Color.BLACK)) player2.deletePiece(to.getPiece());
@@ -189,19 +200,25 @@ public class Game {
         from.deletePiece();
     }
 
-    public void setDefaultColorOfChessboard() {
-        for (int x = 1; x <= NUMBER_OF_SQUARES; x++) {
-            for (int y = 1; y <= NUMBER_OF_SQUARES; y++) {
-                if ((x + y) % 2 == 0) {
-                    this.chessboard.getSquares()[x][y].setStyle("-fx-background-color:SIENNA;");
-                } else {
-                    this.chessboard.getSquares()[x][y].setStyle("-fx-background-color:WHITE;");
-                }
-            }
+    private boolean checkPromotionPawn(Square source) {
+        if (source.getPiece().getName().contains("Pawn") && (source.getPosition().getY() == 1 || source.getPosition().getY() == 8)) {
+            chessboard.setSquaresOff();
+            ChoiceBox<String> choosePiece = new ChoiceBox<>();
+            choosePiece.getItems().addAll("Queen", "Bishop", "Knight", "Rook");
+            this.chessboard.getChessboardPane().getChildren().add(choosePiece);
+            choosePiece.setOnAction(event -> {
+                waitingPlayer.promotionPawn(chessboard, source, choosePiece.getValue());
+            });
+            System.out.println(choosePiece.getValue());
+
+               // wait();
+
+            return true;
         }
+        return false;
     }
 
-    public boolean checkCheck() {
+    private boolean checkCheck() {
         Player playerAttack;
         Point2D king = currentPlayer.king.getPositionPiece();
         if (currentPlayer.equals(player1)) {
@@ -226,4 +243,15 @@ public class Game {
         return false;
     }
 
+    private void setDefaultColorOfChessboard() {
+        for (int x = 1; x <= NUMBER_OF_SQUARES; x++) {
+            for (int y = 1; y <= NUMBER_OF_SQUARES; y++) {
+                if ((x + y) % 2 == 0) {
+                    this.chessboard.getSquares()[x][y].setStyle("-fx-background-color:SIENNA;");
+                } else {
+                    this.chessboard.getSquares()[x][y].setStyle("-fx-background-color:WHITE;");
+                }
+            }
+        }
+    }
 }
