@@ -20,7 +20,7 @@ public class Main extends Application {
 
         Game game = new Game();
 
-        Pane nowy = game.chessboard.getChessboard();
+        Pane nowy = game.getChessboard().getChessboardPane();
 
         Scene scene = new Scene(nowy, 620, 620);
         primaryStage.setResizable(false);
