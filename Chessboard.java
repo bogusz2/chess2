@@ -16,7 +16,7 @@ public class Chessboard {
     protected static final int NUMBER_OF_SQUARES = 8;
     private Square[][] squares = new Square[NUMBER_OF_SQUARES + 1][NUMBER_OF_SQUARES + 1];
 
-    Pane chessboard = new Pane();
+    Pane chessboardPane = new Pane();
     protected static int X0 = 50;
     protected static int Y0 = 50;
 
@@ -34,8 +34,8 @@ public class Chessboard {
         return squares;
     }
 
-    public Pane getChessboard() {
-        return chessboard;
+    public Pane getChessboardPane() {
+        return chessboardPane;
     }
 
     void create64Squares() {
@@ -54,16 +54,15 @@ public class Chessboard {
     void addSquaresToBoard() {
         for (int x = 1; x <= NUMBER_OF_SQUARES; x++) {
             for (int y = 1; y <= NUMBER_OF_SQUARES; y++) {
-                this.chessboard.getChildren().add(this.squares[x][y]);
+                this.chessboardPane.getChildren().add(this.squares[x][y]);
             }
         }
     }
 
-    void setSquaresOffWithout(List<Point2D> list) {
+    void setSquaresOff() {
         for (int x = 1; x <= NUMBER_OF_SQUARES; x++) {
             for (int y = 1; y <= NUMBER_OF_SQUARES; y++) {
-                if (list.contains(this.squares[x][y].getPosition())) this.squares[x][y].setDisable(false);
-                else this.squares[x][y].setDisable(true);
+                this.squares[x][y].setDisable(true);
             }
         }
     }
