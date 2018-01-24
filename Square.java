@@ -14,16 +14,6 @@ public class Square extends Button {
     String color;
     private Piece piece;
 
-
-    public Square(String color, Piece piece, int x, int y) {
-        this.color = color;
-        this.piece = piece;
-        this.position = new Point2D(x, y);
-        this.setLayoutX(1 * x * SIZE_OF_SQUARE + X0 - SIZE_OF_SQUARE);
-        this.setLayoutY(y * SIZE_OF_SQUARE + Y0 - SIZE_OF_SQUARE);
-        this.setPrefSize(SIZE_OF_SQUARE, SIZE_OF_SQUARE);
-    }
-
     public Square(String color, int x, int y) {
         this.color = color;
         this.setStyle("-fx-border-color: black;-fx-border-width: 2;-fx-background-color:" + color);
@@ -31,6 +21,11 @@ public class Square extends Button {
         this.setLayoutX(1 * x * SIZE_OF_SQUARE + X0 - SIZE_OF_SQUARE);
         this.setLayoutY(y * SIZE_OF_SQUARE + Y0 - SIZE_OF_SQUARE);
         this.setPrefSize(SIZE_OF_SQUARE, SIZE_OF_SQUARE);
+    }
+
+    public Square(String color, Piece piece, int x, int y) {
+        this(color, x,y);
+        this.piece = piece;
     }
 
     public Point2D getPosition() {
