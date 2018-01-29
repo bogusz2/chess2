@@ -1,20 +1,10 @@
 package chess;
 
-import javafx.geometry.Point2D;
-import javafx.scene.Scene;
-import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-
-import java.util.List;
-
 
 public class Chessboard {
     protected static final int NUMBER_OF_SQUARES = 8;
-    private Square[][] squares = new Square[NUMBER_OF_SQUARES + 1][NUMBER_OF_SQUARES + 1];
+    final private Square[][] squares = new Square[NUMBER_OF_SQUARES + 1][NUMBER_OF_SQUARES + 1];
 
     Pane chessboardPane = new Pane();
     protected static int X0 = 50;
@@ -26,9 +16,6 @@ public class Chessboard {
         addSquaresToBoard();
     }
 
-    public void setSquares(Square[][] squares) {
-        this.squares = squares;
-    }
 
     public Square[][] getSquares() {
         return squares;

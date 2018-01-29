@@ -9,6 +9,7 @@ import javafx.scene.paint.Color;
 import java.util.LinkedList;
 import java.util.List;
 
+
 import static chess.Chessboard.NUMBER_OF_SQUARES;
 
 public class Game {
@@ -67,7 +68,6 @@ public class Game {
         Piece clipboard = null;
         boolean pieceOfPlayerDisable = false;
         move = true;
-        source.setStyle("-fx-background-color:grey");
 
         for (Point2D a : availableSquare) {
             if (!a.equals(source.getPosition()))
@@ -76,7 +76,7 @@ public class Game {
 
         availableSquare.clear();
         availableSquare.addAll(source.getPiece().checkSquaresForMove(chessboard));
-        if (source.getPiece() instanceof King){
+        if (source.getPiece() instanceof King) {
             addCastlingMove(availableSquare);
         }
         for (Point2D a : availableSquare) {
@@ -94,7 +94,7 @@ public class Game {
 
             if (!checkCheck()) {
                 currentAvailableSquare.setDisable(false);
-                currentAvailableSquare.setStyle("-fx-background-color:grey;-fx-border-color: black;-fx-border-width: 2;");
+                //currentAvailableSquare.setStyle("-fx-background-color:grey;-fx-border-color: black;-fx-border-width: 2;");
             }
 
             move(currentAvailableSquare, source);
@@ -136,7 +136,7 @@ public class Game {
     }
 
     private void checkCastlingIsAvailable(Square source, Point2D avPoint) {
-        if (source.getPiece() instanceof King){
+        if (source.getPiece() instanceof King) {
             if ((source.getPosition().getX() - avPoint.getX() == 2) && chessboard.getSquares()[(int) avPoint.getX() + 1][(int) avPoint.getY()].isDisable()) {
                 chessboard.getSquares()[(int) avPoint.getX()][(int) avPoint.getY()].setDisable(true);
             }
@@ -160,7 +160,13 @@ public class Game {
                 ((Pawn) squareOfPieceToMove.getPiece()).firstMove = false;
 
             move(squareOfPieceToMove, source);
-            checkPromotionPawn(source);
+
+            try {
+                checkPromotionPawn(source);
+            } catch (InterruptedException e) {
+                System.out.println(e.getMessage());
+            }
+
             check = false;
             player1.updateListOfPositionOfPieces();
             player2.updateListOfPositionOfPieces();
@@ -176,7 +182,7 @@ public class Game {
     private void doCastlingIfCan(Square source) {
         int srcX = (int) source.getPosition().getX();
         int srcY = (int) source.getPosition().getY();
-        if (squareOfPieceToMove.getPiece() instanceof King){
+        if (squareOfPieceToMove.getPiece() instanceof King) {
             if ((srcX - squareOfPieceToMove.getPosition().getX()) == 2) {
                 move(chessboard.getSquares()[srcX + 1][srcY], chessboard.getSquares()[srcX - 1][srcY]);
             } else if (squareOfPieceToMove.getPosition().getX() - srcX == 2) {
@@ -199,18 +205,23 @@ public class Game {
         from.deletePiece();
     }
 
-    private boolean checkPromotionPawn(Square source) {
-        if ((source.getPiece()instanceof Pawn) && (source.getPosition().getY() == 1 || source.getPosition().getY() == 8)) {
+    private boolean checkPromotionPawn(Square source) throws InterruptedException {
+        if ((source.getPiece() instanceof Pawn) && (source.getPosition().getY() == 1 || source.getPosition().getY() == 8)) {
             chessboard.setSquaresOff();
             ChoiceBox<String> choosePiece = new ChoiceBox<>();
             choosePiece.getItems().addAll("Queen", "Bishop", "Knight", "Rook");
             this.chessboard.getChessboardPane().getChildren().add(choosePiece);
             choosePiece.setOnAction(event -> {
                 waitingPlayer.promotionPawn(chessboard, source, choosePiece.getValue());
+                synchronized (this) {
+                    notifyAll();
+                }
             });
-            System.out.println(choosePiece.getValue());
+            //while(choosePiece.getValue()==null)System.out.println("blabla");
 
-               // wait();
+            synchronized (this) {
+                wait();
+            }
 
             return true;
         }

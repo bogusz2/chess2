@@ -1,13 +1,8 @@
 package chess;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -19,7 +14,6 @@ public class Main extends Application {
         primaryStage.setTitle("Chess");
 
         Game game = new Game();
-
         Pane nowy = game.getChessboard().getChessboardPane();
 
         Scene scene = new Scene(nowy, 620, 620);

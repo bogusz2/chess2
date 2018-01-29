@@ -50,10 +50,8 @@ public class Pawn extends Piece {
         int y = (int) this.getPositionPiece().getY();
         if (this.color.equals(Color.WHITE)) {
             checkMoveForward(ch, x, y + 1);
-
             if ((!this.squaresToMove.isEmpty()) & firstMove) {
                 checkMoveForward(ch, x, y + 2);
-               // firstMove = false;
             }
             checkCaptures(ch, x + 1, y + 1);
             checkCaptures(ch, x - 1, y + 1);
@@ -61,10 +59,8 @@ public class Pawn extends Piece {
 
         if (this.color.equals(Color.BLACK)) {
             checkMoveForward(ch, x, y - 1);
-
             if ((!this.squaresToMove.isEmpty()) && firstMove) {
                 checkMoveForward(ch, x, y - 2);
-                //firstMove = false;
             }
             checkCaptures(ch, x + 1, y - 1);
             checkCaptures(ch, x - 1, y - 1);

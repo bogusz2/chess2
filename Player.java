@@ -19,7 +19,7 @@ public class Player {
     Pawn[] pawns = new Pawn[9];
     List<Piece> listOfPieces = new LinkedList();
     List<Point2D> positionOfPieces = new LinkedList();
-    public List<Piece> insteadOfPawn = new LinkedList();
+    List<Piece> insteadOfPawn = new LinkedList();
 
 
     public Player(Color c) {
@@ -136,31 +136,32 @@ public class Player {
         else listOfPieces.add(piece);
     }
 
-    public void promotionPawn(Chessboard ch, Square source, String piece){
+    public void promotionPawn(Chessboard ch, Square source, String piece) {
 
-        switch(piece){
+        switch (piece) {
             case "Queen":
-                Queen queenPawn = new Queen(source.getPiece().color,source.getPosition());
+                Queen queenPawn = new Queen(source.getPiece().color, source.getPosition());
                 promotionPawnToPiece(ch, source, queenPawn);
                 break;
             case "Rook":
-                Rook rookPawn = new Rook(source.getPiece().color,source.getPosition());
+                Rook rookPawn = new Rook(source.getPiece().color, source.getPosition());
                 promotionPawnToPiece(ch, source, rookPawn);
                 break;
             case "Bishop":
-                Bishop bishopPawn = new Bishop(source.getPiece().color,source.getPosition());
+                Bishop bishopPawn = new Bishop(source.getPiece().color, source.getPosition());
                 promotionPawnToPiece(ch, source, bishopPawn);
                 break;
             case "Knight":
-                Knight knightPawn = new Knight(source.getPiece().color,source.getPosition());
+                Knight knightPawn = new Knight(source.getPiece().color, source.getPosition());
                 promotionPawnToPiece(ch, source, knightPawn);
                 break;
-                default:
-                    System.out.println("Error in Player.changePawnToPiece()");
+            default:
+                System.out.println("Error in Player.changePawnToPiece()");
         }
 
     }
-    private void promotionPawnToPiece(Chessboard ch,Square source, Piece piece){
+
+    private void promotionPawnToPiece(Chessboard ch, Square source, Piece piece) {
         this.insteadOfPawn.add(piece);
         this.listOfPieces.add(piece);
         this.listOfPieces.remove(source.getPiece());
@@ -168,6 +169,6 @@ public class Player {
         this.positionOfPieces.add(piece.getPositionPiece());
         this.deletePiece(source.getPiece());
         source.deletePiece();
-        ch.getSquares()[(int)source.getPosition().getX()][(int)source.getPosition().getY()].setPiece(piece);
+        ch.getSquares()[(int) source.getPosition().getX()][(int) source.getPosition().getY()].setPiece(piece);
     }
 }
