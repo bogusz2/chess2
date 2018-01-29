@@ -13,7 +13,7 @@ public class Bishop extends Piece {
     }
 
     public Bishop(Color color, Point2D p) {
-        super("Bishop", color,  (int)p.getX(), (int)p.getY());
+        super("Bishop", color, (int) p.getX(), (int) p.getY());
         setColor(color);
     }
 

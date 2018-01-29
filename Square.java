@@ -3,7 +3,6 @@ package chess;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
 
 import static chess.Chessboard.X0;
 import static chess.Chessboard.Y0;
@@ -24,7 +23,7 @@ public class Square extends Button {
     }
 
     public Square(String color, Piece piece, int x, int y) {
-        this(color, x,y);
+        this(color, x, y);
         this.piece = piece;
     }
 

@@ -4,10 +4,10 @@ import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
-import static chess.Chessboard.NUMBER_OF_SQUARES;
-
 import java.util.LinkedList;
 import java.util.List;
+
+import static chess.Chessboard.NUMBER_OF_SQUARES;
 
 abstract public class Piece {
     Image image;

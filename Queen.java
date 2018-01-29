@@ -11,15 +11,15 @@ public class Queen extends Piece {
         super("Queen", color, x, y);
         setColor(color);
     }
+
     public Queen(Color color, Point2D p) {
-        super("Queen", color, (int)p.getX(), (int)p.getY());
+        super("Queen", color, (int) p.getX(), (int) p.getY());
         setColor(color);
     }
 
     private void setColor(Color c) {
         if (color == Color.WHITE) {
             this.image = new Image("file:///C:/Users/Gal Anonim/IdeaProjects/Chess/src/chess/Figury/WhiteQueen.png");
-
         } else {
             this.image = new Image("file:///C:/Users/Gal Anonim/IdeaProjects/Chess/src/chess/Figury/BlackQueen.png");
 

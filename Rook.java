@@ -8,13 +8,14 @@ import java.util.List;
 
 public class Rook extends Piece {
     public boolean isMoved = false;
+
     public Rook(Color color, int x, int y) {
         super("Rook", color, x, y);
         setColor(color);
     }
 
     public Rook(Color color, Point2D p) {
-        super("Rook", color,  (int)p.getX(), (int)p.getY());
+        super("Rook", color, (int) p.getX(), (int) p.getY());
         setColor(color);
     }
 
