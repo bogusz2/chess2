@@ -213,15 +213,16 @@ public class Game {
             this.chessboard.getChessboardPane().getChildren().add(choosePiece);
             choosePiece.setOnAction(event -> {
                 waitingPlayer.promotionPawn(chessboard, source, choosePiece.getValue());
-                synchronized (this) {
-                    notifyAll();
-                }
+//                synchronized (this) {
+//                    notifyAll();
+//                }
+                this.chessboard.getChessboardPane().getChildren().remove(choosePiece);
             });
             //while(choosePiece.getValue()==null)System.out.println("blabla");
 
-            synchronized (this) {
-                wait();
-            }
+//            synchronized (this) {
+//                wait();
+//            }
 
             return true;
         }
