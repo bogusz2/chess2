@@ -3,7 +3,6 @@ package chess;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-
 import java.util.List;
 
 public class Queen extends Piece {
@@ -19,6 +18,9 @@ public class Queen extends Piece {
 
     private void setColor(Color c) {
         if (color == Color.WHITE) {
+//            String currentDir = System.getProperty("user.dir");
+//            currentDir=currentDir+File.separator+"src"+File.separator+"chess";
+//            System.out.println(currentDir);
             this.image = new Image("file:///C:/Users/Gal Anonim/IdeaProjects/Chess/src/chess/Figury/WhiteQueen.png");
         } else {
             this.image = new Image("file:///C:/Users/Gal Anonim/IdeaProjects/Chess/src/chess/Figury/BlackQueen.png");
@@ -27,7 +29,7 @@ public class Queen extends Piece {
     }
 
     @Override
-    List<Point2D> checkSquaresForMove(Chessboard ch) {
+    protected List<Point2D> checkSquaresForMove(Chessboard ch) {
         this.squaresToMove.clear();
         this.checkNorth(ch);
         this.checkSouth(ch);

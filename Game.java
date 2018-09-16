@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
 import java.util.LinkedList;
@@ -23,8 +24,8 @@ public class Game {
     private boolean check = false;
     private Square squareOfPieceToMove;
 
-    public Chessboard getChessboard() {
-        return chessboard;
+    public Pane getChessboardPane() {
+        return new Pane(chessboard.getChessboardPane());
     }
 
 

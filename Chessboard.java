@@ -6,7 +6,7 @@ public class Chessboard {
     protected static final int NUMBER_OF_SQUARES = 8;
     final private Square[][] squares = new Square[NUMBER_OF_SQUARES + 1][NUMBER_OF_SQUARES + 1];
 
-    Pane chessboardPane = new Pane();
+    private Pane chessboardPane = new Pane();
     protected static int X0 = 50;
     protected static int Y0 = 50;
 
@@ -22,7 +22,7 @@ public class Chessboard {
     }
 
     public Pane getChessboardPane() {
-        return chessboardPane;
+        return new Pane(chessboardPane);
     }
 
     void create64Squares() {

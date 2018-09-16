@@ -6,6 +6,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+
 public class Main extends Application {
 
     @Override
@@ -14,7 +15,7 @@ public class Main extends Application {
         primaryStage.setTitle("Chess");
 
         Game game = new Game();
-        Pane nowy = game.getChessboard().getChessboardPane();
+        Pane nowy = game.getChessboardPane();//.getChessboardPane();
 
         Scene scene = new Scene(nowy, 620, 620);
         primaryStage.setResizable(false);
