@@ -4,6 +4,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
+import java.io.File;
 import java.util.List;
 
 public class Pawn extends Piece {
@@ -16,10 +17,12 @@ public class Pawn extends Piece {
 
     private void setColor() {
         if (color == Color.WHITE) {
-            this.image = new Image("file:///C:/Users/Gal Anonim/IdeaProjects/Chess/src/chess/Figury/WhitePawn.png");
+            File dir = new File("");
+            String localPath = dir.getAbsolutePath();
+            this.image = new Image("file:///"+this.localPath+"/src/chess/Figury/WhitePawn.png");
 
         } else {
-            this.image = new Image("file:///C:/Users/Gal Anonim/IdeaProjects/Chess/src/chess/Figury/BlackPawn.png");
+            this.image = new Image("file:///"+this.localPath+"/src/chess/Figury/BlackPawn.png");
 
         }
     }

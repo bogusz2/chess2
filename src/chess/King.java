@@ -15,10 +15,10 @@ public class King extends Piece {
 
     private void setColor(Color c) {
         if (color == Color.WHITE) {
-            this.image = new Image("file:///C:/Users/Gal Anonim/IdeaProjects/Chess/src/chess/Figury/WhiteKing.png");
+            this.image = new Image("file:///"+this.localPath+"/src/chess/Figury/WhiteKing.png");
 
         } else {
-            this.image = new Image("file:///C:/Users/Gal Anonim/IdeaProjects/Chess/src/chess/Figury/BlackKing.png");
+            this.image = new Image("file:///"+this.localPath+"/src/chess/Figury/BlackKing.png");
 
         }
     }

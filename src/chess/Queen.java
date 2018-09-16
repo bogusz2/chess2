@@ -18,12 +18,9 @@ public class Queen extends Piece {
 
     private void setColor(Color c) {
         if (color == Color.WHITE) {
-//            String currentDir = System.getProperty("user.dir");
-//            currentDir=currentDir+File.separator+"src"+File.separator+"chess";
-//            System.out.println(currentDir);
-            this.image = new Image("file:///C:/Users/Gal Anonim/IdeaProjects/Chess/src/chess/Figury/WhiteQueen.png");
+            this.image = new Image("file:///"+this.localPath+"/src/chess/Figury/WhiteQueen.png");
         } else {
-            this.image = new Image("file:///C:/Users/Gal Anonim/IdeaProjects/Chess/src/chess/Figury/BlackQueen.png");
+            this.image = new Image("file:///"+this.localPath+"/src/chess/Figury/BlackQueen.png");
 
         }
     }

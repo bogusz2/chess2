@@ -12,6 +12,7 @@ import static chess.Chessboard.NUMBER_OF_SQUARES;
 abstract public class Piece {
     protected Image image;
     private String name;
+    protected String localPath = System.getProperty("user.dir");
     Color color;
     private Point2D positionPiece;
     List<Point2D> squaresToMove = new LinkedList<Point2D>();

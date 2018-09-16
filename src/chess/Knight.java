@@ -4,6 +4,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
+import java.io.File;
 import java.util.List;
 
 public class Knight extends Piece {
@@ -19,9 +20,9 @@ public class Knight extends Piece {
 
     private void setColor(Color c) {
         if (color == Color.WHITE) {
-            this.image = new Image("file:///C:/Users/Gal Anonim/IdeaProjects/Chess/src/chess/Figury/WhiteKnight.png");
+            this.image = new Image("file:///"+this.localPath+"/src/chess/Figury/WhiteKnight.png");
         } else {
-            this.image = new Image("file:///C:/Users/Gal Anonim/IdeaProjects/Chess/src/chess/Figury/BlackKnight.png");
+            this.image = new Image("file:///"+this.localPath+"/src/chess/Figury/BlackKnight.png");
         }
     }
 
