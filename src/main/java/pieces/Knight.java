@@ -1,33 +1,24 @@
-package chess;
+package pieces;
 
+import chessgame.Chessboard;
 import javafx.geometry.Point2D;
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
-import java.io.File;
 import java.util.List;
 
 public class Knight extends Piece {
     public Knight(Color color, int x, int y) {
         super("Knight", color, x, y);
-        setColor(color);
+        setImage(this.getName());
     }
 
     public Knight(Color color, Point2D p) {
-        super("Knight", color,  (int)p.getX(), (int)p.getY());
-        setColor(color);
-    }
-
-    private void setColor(Color c) {
-        if (color == Color.WHITE) {
-            this.image = new Image("file:///"+this.localPath+"/src/chess/Figury/WhiteKnight.png");
-        } else {
-            this.image = new Image("file:///"+this.localPath+"/src/chess/Figury/BlackKnight.png");
-        }
+        super("Knight", color, (int) p.getX(), (int) p.getY());
+        setImage(this.getName());
     }
 
     @Override
-    List<Point2D> checkSquaresForMove(Chessboard ch) {
+    public List<Point2D> checkSquaresForMove(Chessboard ch) {
         this.squaresToMove.clear();
         int x = (int) this.getPositionPiece().getX();
         int y = (int) this.getPositionPiece().getY();
@@ -41,8 +32,8 @@ public class Knight extends Piece {
                                 ((x + i) <= 8 && (y + j) <= 8) &&
                                 i != 0 && j != 0 &&
                                 ((j % 2 == 0 && i % 2 == -1) || (j % 2 == -1 && i % 2 == 0) || (j % 2 == 0 && i % 2 == 1) || (j % 2 == 1 && i % 2 == 0)) &&
-                                (ch.getSquares()[x + i][y + j].getPiece() == null || (!ch.getSquares()[x + i][y + j].getPiece().color.equals(this.color)))
-                        ) {
+                                (ch.getSquares()[x + i][y + j].getPiece() == null || (!ch.getSquares()[x + i][y + j].getPiece().getColor().equals(this.getColor())))
+                ) {
                     squaresToMove.add(new Point2D(x + i, y + j));
                 }
             }

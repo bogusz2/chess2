@@ -1,14 +1,14 @@
-package chess;
+package chessgame;
 
 import javafx.scene.layout.Pane;
 
 public class Chessboard {
-    protected static final int NUMBER_OF_SQUARES = 8;
+    public static final int NUMBER_OF_SQUARES = 8;
     final private Square[][] squares = new Square[NUMBER_OF_SQUARES + 1][NUMBER_OF_SQUARES + 1];
 
     private Pane chessboardPane = new Pane();
-    protected static int X0 = 50;
-    protected static int Y0 = 50;
+    static int X0 = 50;
+    static int Y0 = 50;
 
 
     public Chessboard() {
@@ -21,7 +21,7 @@ public class Chessboard {
         return squares;
     }
 
-    public Pane getChessboardPane() {
+    Pane getChessboardPane() {
         return new Pane(chessboardPane);
     }
 

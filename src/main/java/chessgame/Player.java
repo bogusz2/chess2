@@ -1,16 +1,17 @@
-package chess;
+package chessgame;
 
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
+import pieces.*;
 
 import java.util.LinkedList;
 import java.util.List;
 
 
-public class Player {
+class Player {
     King king;
     Queen queen;
-    Bishop bishop1;
+    private Bishop bishop1;
     Bishop bishop2;
     Rook rook1;
     Rook rook2;
@@ -22,7 +23,7 @@ public class Player {
     List<Piece> insteadOfPawn = new LinkedList();
 
 
-    public Player(Color c) {
+    Player(Color c) {
         if (c.equals(Color.WHITE)) {
             this.king = new King(Color.WHITE, 5, 1);
             this.queen = new Queen(Color.WHITE, 4, 1);
@@ -74,7 +75,7 @@ public class Player {
         }
     }
 
-    public Chessboard addPiecesToChessboard(Chessboard ch) {
+    Chessboard addPiecesToChessboard(Chessboard ch) {
         for (Piece p : listOfPieces) {
             int x = (int) p.getPositionPiece().getX();
             int y = (int) p.getPositionPiece().getY();
@@ -83,7 +84,7 @@ public class Player {
         return ch;
     }
 
-    public void updateListOfPositionOfPieces() {
+    void updateListOfPositionOfPieces() {
         positionOfPieces.clear();
         for (Piece piece : listOfPieces) {
             try {
@@ -95,7 +96,7 @@ public class Player {
         }
     }
 
-    public void deletePiece(Piece piece) {
+    void deletePiece(Piece piece) {
 
         switch (piece.getName().substring(5)) {
             case "King":
@@ -129,28 +130,28 @@ public class Player {
         listOfPieces.remove(piece);
     }
 
-    public void enablePiece(Piece piece, boolean enable) {
+    void enablePiece(Piece piece, boolean enable) {
         if (!enable) listOfPieces.remove(piece);
         else listOfPieces.add(piece);
     }
 
-    public void promotionPawn(Chessboard ch, Square source, String piece) {
+    void promotionPawn(Chessboard ch, Square source, String piece) {
 
         switch (piece) {
             case "Queen":
-                Queen queenPawn = new Queen(source.getPiece().color, source.getPosition());
+                Queen queenPawn = new Queen(source.getPiece().getColor(), source.getPosition());
                 promotionPawnToPiece(ch, source, queenPawn);
                 break;
             case "Rook":
-                Rook rookPawn = new Rook(source.getPiece().color, source.getPosition());
+                Rook rookPawn = new Rook(source.getPiece().getColor(), source.getPosition());
                 promotionPawnToPiece(ch, source, rookPawn);
                 break;
             case "Bishop":
-                Bishop bishopPawn = new Bishop(source.getPiece().color, source.getPosition());
+                Bishop bishopPawn = new Bishop(source.getPiece().getColor(), source.getPosition());
                 promotionPawnToPiece(ch, source, bishopPawn);
                 break;
             case "Knight":
-                Knight knightPawn = new Knight(source.getPiece().color, source.getPosition());
+                Knight knightPawn = new Knight(source.getPiece().getColor(), source.getPosition());
                 promotionPawnToPiece(ch, source, knightPawn);
                 break;
             default:

@@ -1,5 +1,4 @@
-package chess;
-
+import chessgame.Game;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;

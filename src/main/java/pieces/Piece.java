@@ -1,5 +1,6 @@
-package chess;
+package pieces;
 
+import chessgame.Chessboard;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -7,15 +8,15 @@ import javafx.scene.paint.Color;
 import java.util.LinkedList;
 import java.util.List;
 
-import static chess.Chessboard.NUMBER_OF_SQUARES;
+import static chessgame.Chessboard.NUMBER_OF_SQUARES;
 
 abstract public class Piece {
-    protected Image image;
+
+    private Image image;
     private String name;
-    protected String localPath = System.getProperty("user.dir");
-    Color color;
+    private Color color;
     private Point2D positionPiece;
-    List<Point2D> squaresToMove = new LinkedList<Point2D>();
+    public List<Point2D> squaresToMove = new LinkedList<Point2D>();
 
     public Piece(String name, Color color, int x, int y) {
         if (color == Color.WHITE) this.name = "White" + name;
@@ -36,8 +37,20 @@ abstract public class Piece {
         return name;
     }
 
+    public Color getColor() {
+        return color;
+    }
 
-    protected void checkNorth(Chessboard ch) {
+    public Image getImage() {
+        return image;
+    }
+
+    void setImage(String pieceName) {
+        String resource = getClass().getClassLoader().getResource("Figury/" + pieceName + ".png").toString();
+        this.image = new Image(resource);
+    }
+
+    void checkNorth(Chessboard ch) {
         for (int i = 1; i < positionPiece.getY(); i++) {
             if (ch.getSquares()[(int) positionPiece.getX()][(int) positionPiece.getY() - i].getPiece() == null)
                 squaresToMove.add(new Point2D(positionPiece.getX(), positionPiece.getY() - i));
@@ -48,7 +61,7 @@ abstract public class Piece {
         }
     }
 
-    protected void checkSouth(Chessboard ch) {
+    void checkSouth(Chessboard ch) {
         for (int i = 1; i <= NUMBER_OF_SQUARES - positionPiece.getY(); i++) {
             if (ch.getSquares()[(int) positionPiece.getX()][(int) positionPiece.getY() + i].getPiece() == null)
                 squaresToMove.add(new Point2D(positionPiece.getX(), positionPiece.getY() + i));
@@ -60,7 +73,7 @@ abstract public class Piece {
         }
     }
 
-    protected void checkEast(Chessboard ch) {
+    void checkEast(Chessboard ch) {
         for (int i = 1; i <= NUMBER_OF_SQUARES - positionPiece.getX(); i++) {
             if (ch.getSquares()[(int) positionPiece.getX() + i][(int) positionPiece.getY()].getPiece() == null)
                 squaresToMove.add(new Point2D(positionPiece.getX() + i, positionPiece.getY()));
@@ -72,7 +85,7 @@ abstract public class Piece {
         }
     }
 
-    protected void checkWest(Chessboard ch) {
+    void checkWest(Chessboard ch) {
         for (int i = 1; i < positionPiece.getX(); i++) {
             if (ch.getSquares()[(int) positionPiece.getX() - i][(int) positionPiece.getY()].getPiece() == null)
                 squaresToMove.add(new Point2D(positionPiece.getX() - i, positionPiece.getY()));
@@ -84,7 +97,7 @@ abstract public class Piece {
         }
     }
 
-    protected void checkNorthEast(Chessboard ch) {
+    void checkNorthEast(Chessboard ch) {
         for (int i = 1; i < Integer.min(NUMBER_OF_SQUARES - (int) positionPiece.getX() + 1, (int) positionPiece.getY()); i++) {
             if (ch.getSquares()[(int) positionPiece.getX() + i][(int) positionPiece.getY() - i].getPiece() == null)
                 squaresToMove.add(new Point2D(positionPiece.getX() + i, positionPiece.getY() - i));
@@ -96,7 +109,7 @@ abstract public class Piece {
         }
     }
 
-    protected void checkNorthWest(Chessboard ch) {
+    void checkNorthWest(Chessboard ch) {
         for (int i = 1; i < Integer.min((int) positionPiece.getX(), (int) positionPiece.getY()); i++) {
             if (ch.getSquares()[(int) positionPiece.getX() - i][(int) positionPiece.getY() - i].getPiece() == null)
                 squaresToMove.add(new Point2D(positionPiece.getX() - i, positionPiece.getY() - i));
@@ -108,7 +121,7 @@ abstract public class Piece {
         }
     }
 
-    protected void checkSouthEast(Chessboard ch) {
+    void checkSouthEast(Chessboard ch) {
         for (int i = 1; i < Integer.min(NUMBER_OF_SQUARES - (int) positionPiece.getX() + 1, NUMBER_OF_SQUARES - (int) positionPiece.getY() + 1); i++) {
             if (ch.getSquares()[(int) positionPiece.getX() + i][(int) positionPiece.getY() + i].getPiece() == null)
                 squaresToMove.add(new Point2D(positionPiece.getX() + i, positionPiece.getY() + i));
@@ -120,7 +133,7 @@ abstract public class Piece {
         }
     }
 
-    protected void checkSouthWest(Chessboard ch) {
+    void checkSouthWest(Chessboard ch) {
         for (int i = 1; i < Integer.min((int) positionPiece.getX(), NUMBER_OF_SQUARES - (int) positionPiece.getY() + 1); i++) {
             if (ch.getSquares()[(int) positionPiece.getX() - i][(int) positionPiece.getY() + i].getPiece() == null)
                 squaresToMove.add(new Point2D(positionPiece.getX() - i, positionPiece.getY() + i));
@@ -132,5 +145,5 @@ abstract public class Piece {
         }
     }
 
-    abstract List<Point2D> checkSquaresForMove(Chessboard ch);
+    public abstract List<Point2D> checkSquaresForMove(Chessboard ch);
 }
