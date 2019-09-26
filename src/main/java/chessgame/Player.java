@@ -10,17 +10,17 @@ import java.util.List;
 
 class Player {
     King king;
-    Queen queen;
+    private Queen queen;
     private Bishop bishop1;
-    Bishop bishop2;
+    private Bishop bishop2;
     Rook rook1;
     Rook rook2;
-    Knight knight1;
-    Knight knight2;
-    Pawn[] pawns = new Pawn[9];
+    private Knight knight1;
+    private Knight knight2;
+    private Pawn[] pawns = new Pawn[9];
     List<Piece> listOfPieces = new LinkedList();
     List<Point2D> positionOfPieces = new LinkedList();
-    List<Piece> insteadOfPawn = new LinkedList();
+    private List<Piece> insteadOfPawn = new LinkedList();
 
 
     Player(Color c) {
